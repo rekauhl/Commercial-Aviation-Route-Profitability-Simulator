@@ -1,4 +1,4 @@
-# Commercial Aviation Route Profitability
+# Commercial Aviation Route Profitability Simulator
 
 A route-economics model evaluating 10 Lufthansa Group regional feeder routes into Frankfurt and Munich, across three aircraft types and seven demand scenarios, to answer one question: **when does an aircraft swap save a losing route, and when is the demand shortfall too structural for any aircraft to fix?**
 
