@@ -1,4 +1,6 @@
-A breakdown of the core air traffic and economic metrics in our simulator, detailing how they are calculated and why they drive network steering decisions.
+# Air Traffic Metrics
+
+A breakdown of the core air traffic and economic metrics in our simulator, detailing how they are calculated and why they matter.
 
 ---
 
@@ -6,12 +8,12 @@ A breakdown of the core air traffic and economic metrics in our simulator, detai
 
 * **Formula:**
 
-$$\text{Block Hours} = \left( \frac{\text{Distance (km)}}{\text{Cruise Speed (km/h)}} \right) + 0.35\text{ hrs}$$
+$$\text{Block Hours} = \left( \frac{\text{Distance}_\text{km}}{\text{Cruise Speed}_\text{km/h}} \right) + 0.35\text{ hrs}$$
 
 
 * **What it measures:** Total time from gate pushback at departure to gate arrival at destination.
 * **Why it matters:** Flight crew wages, aircraft lease payments, and engine maintenance intervals are billed per block hour, not pure flight time.
-* **Why done this way:** Dividing distance by cruise speed only captures time spent at cruising altitude. Adding 0.35 hours (21 minutes) accounts for hub taxi-out (12 min), outstation taxi-in (5 min), and low-altitude speed restrictions below 10,000 ft (4 min).
+* **Why done this way:** Dividing distance by cruise speed only captures time spent at cruising altitude. Adding 0.35 hours (21 minutes) accounts for origin taxiing (10 min), destination taxi-in (7 min), and low-altitude speed restrictions (4 min).
 
 ---
 
@@ -19,7 +21,7 @@ $$\text{Block Hours} = \left( \frac{\text{Distance (km)}}{\text{Cruise Speed (km
 
 * **Formula:**
 
-$$\text{ASK} = \text{Seats} \times \text{Distance (km)}$$
+$$\text{ASK} = \text{Seats} \times \text{Distance}_\text{km}$$
 
 
 * **What it measures:** The total passenger carrying capacity produced by a flight.
@@ -32,7 +34,7 @@ $$\text{ASK} = \text{Seats} \times \text{Distance (km)}$$
 
 * **Formula:**
 
-$$\text{RPK} = \min(\text{Demand}, \text{Seats}) \times \text{Distance (km)}$$
+$$\text{RPK} = \min(\text{Demand}, \text{Seats}) \times \text{Distance}_\text{km}$$
 
 
 * **What it measures:** The volume of paid passenger traffic carried over a given distance.
@@ -45,7 +47,7 @@ $$\text{RPK} = \min(\text{Demand}, \text{Seats}) \times \text{Distance (km)}$$
 
 * **Formula:**
 
-$$\text{Load Factor (\%)} = \frac{\text{RPK}}{\text{ASK}} = \frac{\min(\text{Demand}, \text{Seats})}{\text{Seats}}$$
+$$\text{Load Factor} = \frac{\text{RPK}}{\text{ASK}} = \frac{\min(\text{Demand}, \text{Seats})}{\text{Seats}}$$
 
 
 * **What it measures:** The percentage of available seats filled by paying passengers.
@@ -54,7 +56,7 @@ $$\text{Load Factor (\%)} = \frac{\text{RPK}}{\text{ASK}} = \frac{\min(\text{Dem
 
 ---
 
-**5. Cost per Available Seat-Kilometer (CASK / Unit Cost)**
+**5. Cost per Available Seat-Kilometer**
 
 * **Formula:**
 
@@ -63,7 +65,7 @@ $$\text{CASK (€/ASK)} = \frac{\text{Total Direct Operating Costs (€)}}{\text
 
 * **What it measures:** The unit cost to fly one seat over a distance of one kilometer.
 * **Why it matters:** Isolates the operational cost efficiency of an airframe, independent of how many tickets were sold or at what price.
-* **Why done this way:** Larger aircraft generally have a lower CASK due to economies of scale (spreading fixed flight deck and navigation costs over more seats). CASK evaluates whether an aircraft is inherently too expensive to operate on a given route.
+* **Why done this way:** Larger aircraft generally have a lower CASK due to the larger amount of seats. CASK evaluates whether an aircraft is inherently too expensive to operate on a given route.
 
 ---
 
@@ -75,7 +77,7 @@ $$\text{Yield (€/RPK)} = \frac{\text{Total Passenger Revenue (€)}}{\text{RPK
 
 
 * **What it measures:** The average revenue earned from carrying one paying passenger over one kilometer.
-* **Why it matters:** Measures pricing power and market willingness to pay.
+* **Why it matters:** Measures pricing power.
 * **Why done this way:** Raw ticket prices vary widely by distance. Converting revenue to a per-kilometer figure isolates market pricing strength from route length.
 
 ---
@@ -84,7 +86,7 @@ $$\text{Yield (€/RPK)} = \frac{\text{Total Passenger Revenue (€)}}{\text{RPK
 
 * **Formula:**
 
-$$\text{BELF (\%)} = \frac{\text{CASK}}{\text{Yield}}$$
+$$\text{BELF} = \frac{\text{CASK}}{\text{Yield}}$$
 
 
 * **What it measures:** The minimum percentage of seats an aircraft must fill just to cover its operating costs.
@@ -93,4 +95,4 @@ $$\text{BELF (\%)} = \frac{\text{CASK}}{\text{Yield}}$$
 
 $$\text{RPK} \times \text{Yield} = \text{ASK} \times \text{CASK} \implies \frac{\text{RPK}}{\text{ASK}} = \frac{\text{CASK}}{\text{Yield}}$$
 
-This links cost structure (CASK) and pricing power (Yield) into a single benchmark.
+This links unit cost (CASK) and pricing power (Yield) into a single benchmark.
