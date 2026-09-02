@@ -51,7 +51,7 @@ $$\text{Load Factor} = \frac{\text{RPK}}{\text{ASK}} = \frac{\min(\text{Demand},
 
 
 * **What it measures:** The percentage of available seats filled by paying passengers.
-* **Why it matters:** Shows how efficiently an airline fills the capacity it puts into the market.
+* **Why it matters:** Shows how efficiently an airline fills the capacity.
 * **Why done this way:** Expressing occupancy as a percentage enables direct comparison between an A319 (138 seats) and an A321neo (215 seats) on the same route.
 
 ---
