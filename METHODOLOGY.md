@@ -6,7 +6,7 @@ Full formula-by-formula documentation.
 
 ## 1. Network & Distance
 
-- **Airports:** `FRA`, `MUC` (hubs); `KRK`, `WAW`, `PRG`, `BUD`, `POZ` (spokes). Coordinates from OpenFlights `airports.dat` **[Sourced]**. OpenFlights' route data (which airline flies where) is explicitly excluded. The provider stopped updating it in 2014.
+- **Airports:** `FRA`, `MUC` (hubs); `KRK`, `WAW`, `PRG`, `BUD`, `POZ` (spokes). Coordinates from OpenFlights `airports.dat`. OpenFlights' route data (which airline flies where) is explicitly excluded. The provider stopped updating it in 2014.
 - **Distance:** Great-circle (Haversine), via `geosphere::distHaversine()`. Real airway routing is typically slightly longer than the great-circle distance between the airports. Noted as a simplification.
 
 ## 2. Fleet Specifications
