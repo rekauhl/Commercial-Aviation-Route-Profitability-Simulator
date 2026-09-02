@@ -1,4 +1,4 @@
-# Commercial Aviation Route Profitability & Fleet Swap Simulator
+# Commercial Aviation Route Profitability
 
 A route-economics model evaluating 10 Lufthansa Group regional feeder routes into Frankfurt and Munich, across three aircraft types and seven demand scenarios, to answer one question: **when does an aircraft swap save a losing route, and when is the demand shortfall too structural for any aircraft to fix?**
 
@@ -68,13 +68,13 @@ Open the `.twbx` in Tableau and connect to the two CSVs if paths need updating.
 
 ## Known Limitations
 
-- In a Hub-and-Spoke model like Lufthansa's flight network, a short-haul feeder route (e.g. Frankfurt-Kraków) might have a high CASK that exceeds its local ticket yield. However, if the majority of those passengers connect onto a high margin long-haul flight to New York or Tokyo, the route generates massive profit, which doesn't show up in our simulation.
+- In a Hub-and-Spoke model like Lufthansa's flight network, a short-haul feeder route (e.g. Frankfurt-Prague) may look unprofitable due to a high CASK that exceeds its local ticket yield. However, if the majority of those passengers connect onto a high margin long-haul flight to New York or Tokyo, the route generates massive profit, which doesn't show up in our simulation.
 - Applies a single Lufthansa Group system-wide average yield across all routes rather than accounting for route-specific fares or seasonal dynamic pricing. As a result, very short routes (e.g. Munich-Prague) are heavily penalized.
 - Revenue is modeled strictly on passenger traffic, but real-world revenue also depends on belly cargo capacity and ancillary revenue (bags, seat selection), which significantly impact short-haul feeder routes.
 - Spoke-airport (KRK/WAW/PRG/BUD/POZ) fees are modeled as a flat proxy, not sourced from each country's actual tariff. Frankfurt and Munich's charges are sourced precisely (though simplified).
 - Fixed hourly DOC (crew/ownership/maintenance) is a stated benchmark assumption. No public source discloses this at the required granularity for any carrier.
-- EUROCONTROL en-route charges use an average proxy of the origin and destination country unit rates rather than the sum of every unit rate of every country that was passed during the flight.
-- Demand is assumed symmetric in both directions of a flight, ignoring real-world imbalances (e.g. heavy morning inbound to hub, lighter outbound).
+- EUROCONTROL en-route fees average origin and destination unit rates rather than summing every individual overflew airspace along the flight path.
+- Passenger demand is assumed identical in both directions, overlooking real-world imbalances (e.g. heavy morning inbound to hub, lighter outbound).
 - A full sensitivity analysis on fuel price and yield was scoped but not built, given project time constraints.
 
 Full reasoning for every exclusion is in `METHODOLOGY.md`.
