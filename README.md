@@ -43,9 +43,11 @@ CSV export → Tableau Story
 |---|---|
 | `simulation.R` | Full model: data ingestion, cost/revenue engine, scenario matrix |
 | `Simulation_Results_Final.csv` | 210-row model output, one row per route/aircraft/demand scenario |
-| `METHODOLOGY.md` | Methodology, data source, and explicit exclusion. See this for full sourcing detail |
+| `METHODOLOGY.md` | Methodology, data source, and explicit exclusions. See this for full sourcing detail |
 | `METRICS.md` | Explains typical air traffic metrics and why they are used |
-| `Link` | Tableau Story |
+| `Commercial Aviation Route Profitability.twbx` | Tableau Public story, workbook version |
+| `Commercial Aviation Route Profitability.pdf` | Tableau Public story, pdf version |
+| `https://public.tableau.com/views/CommercialAviationRouteProfitability/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link` | Tableau Public story link, rendering may vary by browser  |
 
 ## Running the Model
 
