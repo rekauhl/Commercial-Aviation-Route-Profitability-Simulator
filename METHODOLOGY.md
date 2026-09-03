@@ -35,7 +35,7 @@ A global linear regression was tested first and rejected: A320neo/A321neo fuel b
 Block Hours = (Distance_km / 840) + 0.35
 ```
 
-[**Assumption**] The 0.35h (21 min) buffer covers taxi and speed restrictions (take-off, landing). This is an assumed flat figure, not airport-specific.
+[**Assumption**] The 0.35h (21 min) buffer covers taxi and speed restrictions (takeoff, landing). This is an assumed flat figure, not airport-specific.
 
 ## 5. Fixed Hourly DOC (Direct Operating Cost)
 
@@ -92,7 +92,7 @@ Deliberately excluded: noise-based charges, emissions/pollution charges (require
 
 ## 8. Round Trip Cost Accounting 
 
-To capture the full economic cost of operating a route, all financial line items are synthesized into a complete round trip rotation ($\text{Hub} \leftrightarrow \text{Spoke}$). [**Assumption**] We assumed that passenger demand is the same in each direction (due to simplifications):
+To capture the full economic cost of operating a route, all financial line items are synthesized into a complete round trip rotation ($\text{Hub} \leftrightarrow \text{Spoke}$). [**Assumption**] We assumed that passenger demand is the same in each direction (due to simplification):
 
 ### A. Flight Operational Expenses (Symmetric)
 These parameters occur identically on both the outbound and inbound legs:
