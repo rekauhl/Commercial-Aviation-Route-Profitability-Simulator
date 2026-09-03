@@ -78,7 +78,13 @@ Passenger fee = €15.00/departing passenger
 
 Deliberately excluded: noise-based charges, emissions/pollution charges (require certified per-engine NOx data), and many more, due to simplification.
 
-## 7. Round-Trip Cost Accounting
+## 7. Fixed Hourly DOC (Direct Operating Cost)
+
+```
+Hourly Cost = Block Hours × €1,800/hr
+```
+
+## 8. Round Trip Cost Accounting
 
 Because passenger fees are departure-only, a full rotation (Hub↔Spoke) is built as:
 
@@ -86,12 +92,6 @@ Because passenger fees are departure-only, a full rotation (Hub↔Spoke) is buil
 Mass fees:     2 × (Hub_mass_fee + Spoke_mass_fee)     — charged every movement
 Passenger fees: Pax × (Hub_pax_fee + Spoke_pax_fee)    — charged once each, at own departure point
 Fuel, hourly DOC, en-route fees: 2 × one-way value     — symmetric both directions
-```
-
-## 8. Fixed Hourly DOC (Direct Operating Cost)
-
-```
-Hourly Cost = Block Hours × €1,800/hr
 ```
 
 [**Assumption**] Crew, ownership, and maintenance combined. No airline publicly discloses this at per-aircraft-type, per-block-hour granularity.
@@ -107,7 +107,8 @@ Derived from Lufthansa Group's own disclosed 2025 figures [Source 1: https://rep
 ## 10. Air Traffic Metrics
 
 ```
-Total DOC = Fuel Cost + Hourly DOC + En-Route Fees + Mass Fees + Passenger Fees (Round Trip)
+Total DOC = Fuel Cost + Hourly DOC + En-Route Fees + Mass Fees + Passenger Fees (Round trip)
+Total Revenue = Passengers × Distance_km × Yield (Round trip)
 CASK = Total DOC / (Seats × Distance × 2) (Total DOC accounts for a round trip; hence the 2 in the denominator)
 BELF = CASK / Yield
 Actual LF = min(Demand, Seats) / Seats
