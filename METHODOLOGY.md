@@ -19,6 +19,10 @@ Full formula-by-formula documentation.
 
 ## 3. Fuel Burn
 
+```
+Fuel Cost = Trip_Fuel_kg × €1.11/kg
+```
+
 **Method:** piecewise linear interpolation (`approx()`, `rule = 2`) over five real ICAO stage-length data points per aircraft (125/250/500/750/1000 nm) **[Source: ICAO Carbon Emissions Calculator Methodology v13.1, Appendix C, https://icec.icao.int/Documents/Methodology%20ICAO%20Carbon%20Emissions%20Calculator_v13_Final.pdf]**.
 
 A global linear regression was tested first and rejected: A320neo/A321neo fuel burn is genuinely linear across this range, but A319's real data is not (a steep near 3x jump in per-nm burn between 125nm and 250nm), so a single fitted line distorted its short-distance fuel cost by ~25%. Interpolation preserves the real, non-linear shape instead.
@@ -33,11 +37,19 @@ Block Hours = (Distance_km / 840) + 0.35
 
 [**Assumption**] The 0.35h (21 min) buffer covers taxi and speed restrictions (take-off, landing). This is an assumed flat figure, not airport-specific.
 
-## 5. En-Route Navigation Charges
+## 5. Fixed Hourly DOC (Direct Operating Cost)
 
 ```
-Fee = (Distance_km / 100) × sqrt(MTOW_tonnes / 50) × Blended_Unit_Rate
-Blended_Unit_Rate = (Origin_Country_Rate + Destination_Country_Rate) / 2
+Hourly Cost = Block Hours × €1,800/hr
+```
+
+[**Assumption**] Crew, ownership, and maintenance combined. No airline publicly discloses this at per-aircraft-type, per-block-hour granularity.
+
+## 6. En-Route Navigation Charges
+
+```
+En-Route Fee = (Distance_km / 100) × sqrt(MTOW_tonnes / 50) × Blended Unit Rate
+Blended Unit Rate = (Origin Country Rate + Destination Country Rate) / 2
 ```
 
 Formula verified against EUROCONTROL's *"Conditions of Application of the Route Charges System and Conditions of Payment"* **[Source: https://www.eurocontrol.int/sites/default/files/2021-10/doc-21-60-02-eurocontrol-conditions-application-november-2021-en.pdf]**. Origin/destination averaging is a simplification for the true per-country-crossed calculation.
@@ -49,11 +61,11 @@ Formula verified against EUROCONTROL's *"Conditions of Application of the Route 
 | Czech Republic | 79.34 | same as above |
 | Hungary | 42.73 | same as above |
 
-## 6. Airport Charges
+## 7. Airport Charges
 
 Passenger-count charges are **departure-only** in both real tariffs (no charge on arriving passengers). Mass charges apply to every movement, landing and takeoff alike.
 
-**Frankfurt** (Fraport, "Airport Charges according to Art. 19b Air Traffic Act",  **[Source: https://www.fraport.com/en/business-areas/operations/airport-charges.html]**):
+**Frankfurt** **[Source: Fraport, Airport Charges according to Art. 19b Air Traffic Act, https://www.fraport.com/en/business-areas/operations/airport-charges.html]**:
 
 ```
 Mass fee = €2.50 × ⌈MTOW_tonnes⌉  (per movement)
@@ -61,7 +73,7 @@ Passenger fee = €28.10/departing passenger
               = €1.79 (§1.2.4) + €24.56 (§1.3.2) + €1.63 (§1.4) + €0.12 (§1.6.2)
 ```
 
-**Munich** (Flughafen München, Airport Charges Tariff Regulations 2026, Part 1 **[Source: https://www.munich-airport.com/airport-charges-1325117]**):
+**Munich** **[Source: Flughafen München, Airport Charges Tariff Regulations 2026, Part 1, https://www.munich-airport.com/airport-charges-1325117]**):
 
 ```
 Mass fee = €2.38 × ⌈MTOW_tonnes⌉  (per movement)
@@ -69,7 +81,7 @@ Passenger fee = €27.86/departing passenger
               = €26.36 (§2.6) + €1.50 (§2.11)
 ```
 
-**Spoke airports** (KRK/WAW/PRG/BUD/POZ) [**Assumption**], not sourced from national tariffs but estimated lower than the hub airport tariffs due to simplification:
+[**Assumption**] **Spoke airports** (KRK/WAW/PRG/BUD/POZ), not sourced from national tariffs due to simplification. Estimated lower than the hub airport tariffs:
 
 ```
 Mass fee = €2.00 × ⌈MTOW_tonnes⌉
@@ -78,23 +90,30 @@ Passenger fee = €15.00/departing passenger
 
 Deliberately excluded: noise-based charges, emissions/pollution charges (require certified per-engine NOx data), and many more, due to simplification.
 
-## 7. Fixed Hourly DOC (Direct Operating Cost)
+## 8. Round Trip Cost Accounting 
+
+To capture the full economic cost of operating a route, all financial line items are synthesized into a complete round trip rotation ($\text{Hub} \leftrightarrow \text{Spoke}$). [**Assumption**] We assumed that passenger demand is the same in each direction (due to simplifications):
+
+### A. Flight Operational Expenses (Symmetric)
+These parameters occur identically on both the outbound and inbound legs:
 
 ```
-Hourly Cost = Block Hours × €1,800/hr
+Operational Cost (Round Trip) = 2 × (Fuel Cost + Hourly Cost + En-Route Fee)
 ```
 
-## 8. Round Trip Cost Accounting
-
-Because passenger fees are departure-only, a full rotation (Hub↔Spoke) is built as:
+### B. Aircraft Mass Charges (4 Individual Airport Movements)
+Because a complete round trip consists of two landings and two takeoffs, mass charges apply twice at the hub and twice at the spoke:
 
 ```
-Mass fees:     2 × (Hub_mass_fee + Spoke_mass_fee)     — charged every movement
-Passenger fees: Pax × (Hub_pax_fee + Spoke_pax_fee)    — charged once each, at own departure point
-Fuel, hourly DOC, en-route fees: 2 × one-way value     — symmetric both directions
+Mass Fee (Round Trip) = 2 × (Mass Fee Hub + Mass Fee Spoke)
 ```
 
-[**Assumption**] Crew, ownership, and maintenance combined. No airline publicly discloses this at per-aircraft-type, per-block-hour granularity.
+### C. Passenger Handling Fees (Single Departure per Passenger)
+Because passenger fees are assessed strictly at the airport of departure, each passenger on a round trip rotation pays the hub departure fee once and the spoke departure fee once:
+
+```
+Passenger Fee (Round Trip) = min(Demand, Seats) × (Passenger Fee Hub + Passenger Fee Spoke)
+```
 
 ## 9. Yield
 
@@ -102,14 +121,18 @@ Fuel, hourly DOC, en-route fees: 2 × one-way value     — symmetric both direc
 Yield = Passenger Traffic Revenue / RPK = €0.102/RPK (rounded to €0.10 in the model)
 ```
 
-Derived from Lufthansa Group's own disclosed 2025 figures [Source 1: https://report.lufthansagroup.com/2025/annual-report/en/company/key-figures-lufthansa-group/] [Source 2: https://report.lufthansagroup.com/2025/annual-report/en/combined-management-report/economic-report/financial-performance/earnings-position/]: €28,623m passenger traffic revenue ÷ 281,765m RPK. Passenger (not total) traffic revenue is used deliberately. Total traffic revenue includes cargo revenue (€3,702m in 2025), which is generated by RTK, not RPK. Mixing the two would be a unit mismatch. This is a system-wide average across short- and long-haul combined. Actual short-haul yield is likely somewhat higher.
+Derived from Lufthansa Group's own disclosed 2025 figures **[Source 1: https://report.lufthansagroup.com/2025/annual-report/en/company/key-figures-lufthansa-group/]**, **[Source 2: https://report.lufthansagroup.com/2025/annual-report/en/combined-management-report/economic-report/financial-performance/earnings-position/]**: €28,623m passenger traffic revenue ÷ 281,765m RPK. Passenger (not total) traffic revenue is used deliberately. Total traffic revenue includes cargo revenue (€3,702m in 2025), which is generated by RTK, not RPK. Mixing the two would be a unit mismatch. This is a system-wide average across short- and long-haul combined. Actual short-haul yield is likely somewhat higher.
 
-## 10. Air Traffic Metrics
+## 10. Decision Metrics
 
 ```
-Total DOC = Fuel Cost + Hourly DOC + En-Route Fees + Mass Fees + Passenger Fees (Round trip)
-Total Revenue = Passengers × Distance_km × Yield (Round trip)
-CASK = Total DOC / (Seats × Distance × 2) (Total DOC accounts for a round trip; hence the 2 in the denominator)
+Total DOC (Round Trip) = Operational Cost (Round Trip) + Mass Fee (Round Trip) + Passenger Fee (Round Trip)
+Total Revenue (Round Trip) = 2 × min(Demand, Seats) × Distance_km × Yield
+Net Profit (Round Trip ) = Total Revenue (Round Trip) - Total DOC (Round Trip)
+
+CASK = Total DOC (Round Trip)/(Seats × Distance × 2) (Total DOC accounts for a round trip; hence the 2 in the denominator)
 BELF = CASK / Yield
 Actual LF = min(Demand, Seats) / Seats
 ```
+
+Note: Total cost here reflects direct operating costs only. Indirect operating costs (ground handling, station administration, ...) are not modeled, so absolute CASK/BELF figures are understated relative to a full cost basis. However, this would likely only change the absolute profit/CASK/BELF numbers, but shouldn't meaningfully change the ranking (relative comparisons of which aircraft wins).
