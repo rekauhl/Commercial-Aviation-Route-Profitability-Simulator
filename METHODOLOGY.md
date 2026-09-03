@@ -19,11 +19,11 @@ Full formula-by-formula documentation.
 
 ## 3. Fuel Burn
 
-**Method:** piecewise linear interpolation (`approx()`, `rule = 2`) over five real ICAO stage-length data points per aircraft (125/250/500/750/1000 nm) **[Source: ICAO Carbon Emissions Calculator Methodology v13.1, Appendix C, Link: https://icec.icao.int/Documents/Methodology%20ICAO%20Carbon%20Emissions%20Calculator_v13_Final.pdf]**.
+**Method:** piecewise linear interpolation (`approx()`, `rule = 2`) over five real ICAO stage-length data points per aircraft (125/250/500/750/1000 nm) **[Source: ICAO Carbon Emissions Calculator Methodology v13.1, Appendix C, https://icec.icao.int/Documents/Methodology%20ICAO%20Carbon%20Emissions%20Calculator_v13_Final.pdf]**.
 
 A global linear regression was tested first and rejected: A320neo/A321neo fuel burn is genuinely linear across this range, but A319's real data is not (a steep near 3x jump in per-nm burn between 125nm and 250nm), so a single fitted line distorted its short-distance fuel cost by ~25%. Interpolation preserves the real, non-linear shape instead.
 
-**Fuel price:** €1.11/kg **[Source: IATA Jet Fuel Price Monitor, Link: https://www.iata.org/en/publications/economics/fuel-monitor/]**. Elevated due to the 2026 fuel-price crisis.
+**Fuel price:** €1.11/kg **[Source: IATA Jet Fuel Price Monitor, https://www.iata.org/en/publications/economics/fuel-monitor/]**. Elevated due to the 2026 fuel-price crisis.
 
 ## 4. Block Time
 
@@ -40,7 +40,7 @@ Fee = (Distance_km / 100) × sqrt(MTOW_tonnes / 50) × Blended_Unit_Rate
 Blended_Unit_Rate = (Origin_Country_Rate + Destination_Country_Rate) / 2
 ```
 
-Formula verified against EUROCONTROL's *"Conditions of Application of the Route Charges System and Conditions of Payment"* **[Link: https://www.eurocontrol.int/sites/default/files/2021-10/doc-21-60-02-eurocontrol-conditions-application-november-2021-en.pdf]**. Origin/destination averaging is a simplification for the true per-country-crossed calculation.
+Formula verified against EUROCONTROL's *"Conditions of Application of the Route Charges System and Conditions of Payment"* **[Source: https://www.eurocontrol.int/sites/default/files/2021-10/doc-21-60-02-eurocontrol-conditions-application-november-2021-en.pdf]**. Origin/destination averaging is a simplification for the true per-country-crossed calculation.
 
 | Country | Unit Rate (€) | Source |
 |---|---|---|
