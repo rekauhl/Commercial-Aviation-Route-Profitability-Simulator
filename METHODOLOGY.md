@@ -108,7 +108,7 @@ Derived from Lufthansa Group's own disclosed 2025 figures [Source 1: https://rep
 
 ```
 Total DOC = Fuel Cost + Hourly DOC + En-Route Fees + Mass Fees + Passenger Fees (Round Trip)
-CASK = Total DOC / (Seats × Distance × 2) (Round Trip; hence the 2 in the denominator)
+CASK = Total DOC / (Seats × Distance × 2) (Total DOC accounts for a round trip; hence the 2 in the denominator)
 BELF = CASK / Yield
 Actual LF = min(Demand, Seats) / Seats
 ```
