@@ -42,7 +42,7 @@ CSV export → Tableau Story
 | File | Contents |
 |---|---|
 | `simulation.R` | Full model: data ingestion, cost/revenue engine, scenario matrix |
-| `LHG_Simulation_Results_Final.csv` | 210-row model output, one row per route/aircraft/demand scenario |
+| `Simulation_Results_Final.csv` | 210-row model output, one row per route/aircraft/demand scenario |
 | `METHODOLOGY.md` | Methodology, data source, and explicit exclusion. See this for full sourcing detail |
 | `METRICS.md` | Explains typical air traffic metrics and why they are used |
 | `Link` | Tableau Story |
