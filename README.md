@@ -47,7 +47,7 @@ CSV export → Tableau Story
 | `METRICS.md` | Explains typical air traffic metrics and why they are used |
 | `Commercial Aviation Route Profitability.twbx` | Tableau Public story, workbook version |
 | `Commercial Aviation Route Profitability.pdf` | Tableau Public story, pdf version |
-| `https://public.tableau.com/views/CommercialAviationRouteProfitability/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link` | Tableau Public story link, rendering may vary by browser  |
+| `http://public.tableau.com/views/CommercialAviationRouteProfitability/Story1` | Tableau Public story link, rendering may vary by browser  |
 
 ## Running the Model
 
